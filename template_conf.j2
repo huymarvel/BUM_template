@@ -1,0 +1,13 @@
+{% for BUM in int %}
+set firewall family vpls filter BUM-{{BUM}} term broadcast-traffic from traffic-type broadcast
+set firewall family vpls filter BUM-{{BUM}} term broadcast-traffic then policer POLICER-BCAST
+set firewall family vpls filter BUM-{{BUM}} term broadcast-traffic then accept
+set firewall family vpls filter BUM-{{BUM}} term multicast-traffic from traffic-type multicast
+set firewall family vpls filter BUM-{{BUM}} term multicast-traffic then policer POLICER-MCAST
+set firewall family vpls filter BUM-{{BUM}} term multicast-traffic then accept
+set firewall family vpls filter BUM-{{BUM}} term unknown-unicast-traffic from traffic-type unknown-unicast
+set firewall family vpls filter BUM-{{BUM}} term unknown-unicast-traffic then policer POLICER-BCAST
+set firewall family vpls filter BUM-{{BUM}} term unknown-unicast-traffic then accept
+set routing-instances L2-{{BUM}} forwarding-options family vpls flood input BUM-{{BUM}}
+activate routing-instances L2-{{BUM}} forwarding-options family vpls flood input
+{% endfor %}
